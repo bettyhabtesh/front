@@ -1,0 +1,53 @@
+.navbar {
+  background-color: #1a1a1a;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+    align-items: center;
+    padding: 10px;
+    color: white;
+    font-size: 20px;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+.navbarMain {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  margin: 5px 0;
+  transition: background-color 0.3s;
+}
+
+.link:hover {
+  background-color: #333;
+}
+
+.linkIcon {
+  margin-right: 10px;
+}
+
+.footer {
+  padding: 10px;
+}
+
+.footer .link {
+  margin-top: 10px;
+}
