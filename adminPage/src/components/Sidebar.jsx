@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Group, Divider, Text } from "@mantine/core";
-import { NavLink } from "react-router-dom"; // ✅ Use NavLink instead of Link
+import { NavLink, useNavigate } from "react-router-dom"; 
 import {
   IconBellRinging,
   IconDatabaseImport,
   IconReceipt2,
-  IconSwitchHorizontal,
   IconLogout,
 } from "@tabler/icons-react";
 
@@ -20,6 +19,15 @@ const data = [
 
 export function Sidebar() {
   const [active, setActive] = useState("Dashboard");
+  const navigate = useNavigate(); // Hook to handle navigation
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn"); // Remove login state
+    setTimeout(() => {
+      navigate("/login"); // Navigate after clearing state
+    }, 100); // Small delay to ensure state is cleared before navigating
+  };
+  
 
   return (
     <nav className={classes.navbar}>
@@ -49,12 +57,11 @@ export function Sidebar() {
       <Divider my="sm" />
 
       <div className={classes.footer}>
-        <NavLink to="#" className={classes.link}>
-          <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
-          <span>Change account</span>
-        </NavLink>
-
-        <NavLink to="#" className={classes.link}>
+        <NavLink
+          to="/login"
+          className={classes.link}
+          onClick={handleLogout} // Trigger logout on click
+        >
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>Logout</span>
         </NavLink>

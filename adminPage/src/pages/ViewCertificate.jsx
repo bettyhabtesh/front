@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { Container, Title, ActionIcon } from "@mantine/core";
+import { Container, Title, ActionIcon, Text } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
+import "../App.css"; 
 
 const ViewCertificate = () => {
   const { id } = useParams();
@@ -19,18 +20,26 @@ const ViewCertificate = () => {
   const document = certificates[id];
 
   return (
-    <Container>
+    <Container className="view-certificate-container">
       {/* Back Arrow Navigation */}
-      <ActionIcon size="lg" variant="light" onClick={() => navigate("/")} mb="md">
-        <IconArrowLeft size={24} />
-      </ActionIcon>
-
-      <Title order={2} mb="md">View Certificate</Title>
+      <div className="back-button" onClick={() => navigate("/approvals")}>
+        <ActionIcon size="lg" variant="light">
+          <IconArrowLeft size={24} />
+        </ActionIcon>
+      </div>
+{/*      <Title order={2} mb="md">View Certificate</Title>
       {document ? (
         // <iframe src={/${document}} width="100%" height="500px" title="Certificate"></iframe>
         document
       ) : (
         <p>No certificate found.</p>
+      )}*/}
+      <Title order={2} mb="md">View Certificate</Title>
+
+      {document ? (
+        document
+      ) : (
+        <p className="no-certificate">No certificate found.</p>
       )}
     </Container>
   );

@@ -1,6 +1,7 @@
 import { Container, Title, Text, Paper, RingProgress, SimpleGrid, Center, Group, Card, Divider } from "@mantine/core";
 import { IconArrowUpRight, IconArrowDownRight } from "@tabler/icons-react";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, Legend } from "recharts";
+import "../App.css";
 
 // Icons for stats
 const icons = {
@@ -39,96 +40,75 @@ const COLORS = ["#4caf50", "#ff9800", "#2196f3"];
 
 const Dashboard = () => {
   return (
-    <Container size="xl" py="lg">
-      <Title order={2} mb="md" align="center" style={{ color: "#333", fontWeight: 600 }}>
-        Dashboard
+    <Container size="xl" py="lg" className="container">
+  <Title order={2} className="dashboard-title">
+    Dashboard
+  </Title>
+
+  <SimpleGrid cols={5} spacing="lg" className="stats-grid">
+    {statsData.map((stat) => {
+      const Icon = icons[stat.icon];
+      return (
+        <Paper withBorder radius="md" p="md" className="stat-card" key={stat.label}>
+          <Group position="center">
+           <RingProgress
+  size={80}  // Reduced from 100 to 80
+  roundCaps
+  thickness={6} // Thinner ring
+  sections={[{ value: stat.progress, color: stat.color }]}
+  label={
+    <Center>
+      <Icon size={20} stroke={1.5} color={stat.color} />
+    </Center>
+  }
+/>
+          </Group>
+          <Text className="stat-label">{stat.label}</Text>
+          <Text className="stat-value" style={{ color: stat.color }}>
+            {stat.stats}
+          </Text>
+        </Paper>
+      );
+    })}
+  </SimpleGrid>
+
+  <Divider my="xl" />
+
+  <SimpleGrid cols={2} spacing="lg" className="charts-grid">
+    <Card className="chart-card">
+      <Title order={3} align="center">
+        User Distribution
       </Title>
+      <ResponsiveContainer width="100%" height={300}>
+        <PieChart>
+          <Pie data={userDistribution} cx="50%" cy="50%" outerRadius={120} label>
+            {userDistribution.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </ResponsiveContainer>
+    </Card>
 
-      {/* Stats Rings */}
-      <SimpleGrid
-        cols={5}  // Horizontal layout for stats (5 stats, adjust number as needed)
-        spacing="lg"
-        mb="xl"
-        style={{ display: "flex", justifyContent: "space-around", alignItems: "center" }}
-      >
-        {statsData.map((stat) => {
-          const Icon = icons[stat.icon];
-          return (
-            <Paper
-              withBorder
-              radius="md"
-              p="md"
-              shadow="sm"
-              key={stat.label}
-              style={{
-                textAlign: "center",
-                width: "100%", // Ensures each stat card takes full width
-                maxWidth: "200px",  // Limit the max width of each stat box
-              }}
-            >
-              <Group position="center">
-                <RingProgress
-                  size={100}
-                  roundCaps
-                  thickness={8}
-                  sections={[{ value: stat.progress, color: stat.color }]}
-                  label={
-                    <Center>
-                      <Icon size={22} stroke={1.5} color={stat.color} />
-                    </Center>
-                  }
-                />
-              </Group>
-              <Text size="sm" color="dimmed" tt="uppercase" fw={700} mt="md">
-                {stat.label}
-              </Text>
-              <Text fw={700} size="xl" style={{ color: stat.color }}>
-                {stat.stats}
-              </Text>
-            </Paper>
-          );
-        })}
-      </SimpleGrid>
+    <Card className="chart-card">
+      <Title order={3} align="center">
+        Approval Requests Trend
+      </Title>
+      <ResponsiveContainer width="100%" height={300}>
+        <BarChart data={approvalTrends}>
+          <XAxis dataKey="month" stroke="#333" />
+          <YAxis stroke="#333" />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="approvals" fill="#8884d8" radius={[10, 10, 0, 0]} />
+        </BarChart>
+      </ResponsiveContainer>
+    </Card>
+  </SimpleGrid>
+</Container>
 
-      <Divider my="xl" />
-
-      {/* User Distribution Pie Chart and Approval Request Trends */}
-      <SimpleGrid cols={2} spacing="lg" mb="lg" style={{ display: "flex", alignItems: "flex-start" }}>
-        {/* Pie Chart */}
-        <Card shadow="md" radius="md" p="md" style={{ backgroundColor: "#f9f9f9", width: "100%" }}>
-          <Title order={3} align="center" mb="md" style={{ color: "#444" }}>
-            User Distribution
-          </Title>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie data={userDistribution} cx="50%" cy="50%" outerRadius={120} label>
-                {userDistribution.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </Card>
-
-        {/* Bar Chart */}
-        <Card shadow="md" radius="md" p="md" style={{ backgroundColor: "#f9f9f9", width: "100%" }}>
-          <Title order={3} align="center" mb="md" style={{ color: "#444" }}>
-            Approval Requests Trend
-          </Title>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={approvalTrends}>
-              <XAxis dataKey="month" stroke="#333" />
-              <YAxis stroke="#333" />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="approvals" fill="#8884d8" radius={[10, 10, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </Card>
-      </SimpleGrid>
-    </Container>
   );
 };
 

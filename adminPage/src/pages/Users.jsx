@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Select, MenuItem } from "@mui/material";
 import { Container, Title, Pagination } from "@mantine/core";
+import "../App.css"; 
 
 const Users = () => {
   const [userType, setUserType] = useState("all");
   const [page, setPage] = useState(1);
-  const rowsPerPage = 5; // 🔹 Number of rows per page
+  const rowsPerPage = 8; // 🔹 Number of rows per page
 
   const users = [
     { id: 1, name: "John Doe", type: "Farmer" },
@@ -35,55 +36,59 @@ const Users = () => {
   const paginatedUsers = filteredUsers.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   return (
-    <Container>
-      <Title order={2} mb="md">Users</Title>
+    <Container className="users-container">
+  <Title order={2} mb="md" className="users-title">
+    Users
+  </Title>
 
-      <Select
-        value={userType}
-        onChange={(e) => {
-          setUserType(e.target.value);
-          setPage(1); // Reset page when filter changes
-        }}
-        displayEmpty
-        variant="outlined"
-        sx={{ mb: 2 }}
-      >
-        <MenuItem value="all">All</MenuItem>
-        <MenuItem value="Farmer">Farmer</MenuItem>
-        <MenuItem value="Agricultural Researcher">Agricultural Researcher</MenuItem>
-        <MenuItem value="Expert">Expert</MenuItem>
-      </Select>
+  <Select
+    value={userType}
+    onChange={(e) => {
+      setUserType(e.target.value);
+      setPage(1); // Reset page when filter changes
+    }}
+    displayEmpty
+    variant="outlined"
+    sx={{ mb: 2 }}
+    className="users-select"
+  >
+    <MenuItem value="all">All</MenuItem>
+    <MenuItem value="Farmer">Farmer</MenuItem>
+    <MenuItem value="Agricultural Researcher">Agricultural Researcher</MenuItem>
+    <MenuItem value="Expert">Expert</MenuItem>
+  </Select>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>User Type</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {paginatedUsers.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.type}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+  <TableContainer component={Paper} className="users-table">
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>ID</TableCell>
+          <TableCell>Name</TableCell>
+          <TableCell>User Type</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {paginatedUsers.map((user) => (
+          <TableRow key={user.id}>
+            <TableCell>{user.id}</TableCell>
+            <TableCell>{user.name}</TableCell>
+            <TableCell>{user.type}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
 
-      <Pagination
-        total={totalPages}
-        value={page}
-        onChange={setPage}
-        mt="md"
-        size="sm"
-        color="blue"
-      />
-    </Container>
+  <Pagination
+    total={totalPages}
+    value={page}
+    onChange={setPage}
+    mt="md"
+    size="sm"
+    color="blue"
+    className="users-pagination"
+  />
+</Container>
   );
 };
 
