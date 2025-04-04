@@ -31,7 +31,7 @@ function App() {
   }, [isLoggedIn, navigate]);
 
   return (
-<div className="app-container">
+   <div className="app-container">
       {isLoggedIn && <Sidebar />}
       {/* <Container fluid className="main-content"> */}
         <Routes>
