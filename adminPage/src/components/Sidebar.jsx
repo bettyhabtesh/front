@@ -1,6 +1,8 @@
+/** @format */
+
 import { useState } from "react";
 import { Group, Divider, Text } from "@mantine/core";
-import { NavLink, useNavigate } from "react-router-dom"; 
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   IconBellRinging,
   IconDatabaseImport,
@@ -27,7 +29,6 @@ export function Sidebar() {
       navigate("/login"); // Navigate after clearing state
     }, 100); // Small delay to ensure state is cleared before navigating
   };
-  
 
   return (
     <nav className={classes.navbar}>
@@ -45,7 +46,7 @@ export function Sidebar() {
               `${classes.link} ${isActive ? classes.active : ""}`
             }
             key={item.label}
-            onClick={() => setActive(item.label)} // ✅ Removed preventDefault()
+            onClick={() => setActive(item.label)}
             style={{ textDecoration: "none", color: "white" }}
           >
             <item.icon className={classes.linkIcon} stroke={1.5} />

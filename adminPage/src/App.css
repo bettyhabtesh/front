@@ -1,28 +1,33 @@
-
-
-/* General Container Styling */
+/**
+ * General Container Styling
+ *
+ * @format
+ */
 
 /* App.css */
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
 }
 
-
 .app-container {
   display: flex;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   overflow: hidden;
 }
 
 .main-content {
   flex: 1;
-  padding: 0;
-  margin: 0;
+  padding: 20px;
+  width: 100%;
+  max-width: 100% !important;
+  box-sizing: border-box;
 }
 
 .login-container {
@@ -42,7 +47,8 @@ html, body, #root {
 .login-container::before {
   content: "";
   position: absolute;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.6);
@@ -104,7 +110,7 @@ html, body, #root {
 }
 .container {
   padding: 20px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 /* Dashboard Title */

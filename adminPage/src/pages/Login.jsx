@@ -1,18 +1,21 @@
+/** @format */
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
-import backgroundImage from "../Assets/sende.png"; 
+import backgroundImage from "../Assets/sende.png";
 
-function Sende() {
+function Sende({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
+    // Simulate login success
     localStorage.setItem("isLoggedIn", "true");
-    navigate("/dashboard");
+    onLogin(); // Update App state
+    navigate("/dashboard"); // Navigate after login
   };
 
   return (
@@ -26,7 +29,6 @@ function Sende() {
     >
       <form className="login-form" onSubmit={handleLogin}>
         <h2>Sende</h2>
-        {error && <p className="error-message">{error}</p>}
         <input
           type="email"
           placeholder="Email"
