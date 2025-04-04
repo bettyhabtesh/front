@@ -31,9 +31,9 @@ function App() {
   }, [isLoggedIn, navigate]);
 
   return (
-    <div className="app-container">
+<div className="app-container">
       {isLoggedIn && <Sidebar />}
-      <Container fluid className="main-content">
+      {/* <Container fluid className="main-content"> */}
         <Routes>
           <Route path="/login" element={<Sende />} />
           <Route path="/" element={<Navigate to={isLoggedIn ? "/dashboard" : "/login"} replace />} />
@@ -42,7 +42,7 @@ function App() {
           <Route path="/approvals" element={isLoggedIn ? <Approvals /> : <Navigate to="/login" replace />} />
           <Route path="/view-certificate/:id" element={isLoggedIn ? <ViewCertificate /> : <Navigate to="/login" replace />} />
         </Routes>
-      </Container>
+      {/* </Container> */}
     </div>
   );
 }
