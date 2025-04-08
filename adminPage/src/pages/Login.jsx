@@ -8,14 +8,37 @@ import backgroundImage from "../Assets/sende.png";
 function Sende({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // For displaying errors
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Simulate login success
-    localStorage.setItem("isLoggedIn", "true");
-    onLogin(); // Update App state
-    navigate("/dashboard"); // Navigate after login
+    setError(""); // Clear previous errors
+
+    try {
+      const response = await fetch(
+        "https://wheat-rust-detection-backend.onrender.com/login/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Invalid email or password");
+      }
+
+      const data = await response.json();
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("token", data.token); // Save token if needed
+      onLogin();
+      navigate("/dashboard");
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
@@ -29,6 +52,7 @@ function Sende({ onLogin }) {
     >
       <form className="login-form" onSubmit={handleLogin}>
         <h2>Sende</h2>
+        {error && <p className="error-message">{error}</p>}
         <input
           type="email"
           placeholder="Email"
