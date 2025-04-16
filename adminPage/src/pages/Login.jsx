@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 import backgroundImage from "../Assets/sende.png";
+import { login, setAuthToken } from "../services/authService";
 
 function Sende({ onLogin }) {
   const [email, setEmail] = useState("");
@@ -13,33 +14,25 @@ function Sende({ onLogin }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
-
+    setError("");
+  
     try {
-      const response = await fetch(
-        "https://wheat-rust-detection-backend.onrender.com/login/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Invalid email or password");
-      }
-
-      const data = await response.json();
+      const { access, refresh } = await login(email, password);
       localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("token", data.token); // Save token if needed
+      localStorage.setItem("token", access); // <-- store access token
+      localStorage.setItem("refreshToken", refresh); // optional if you use it later
+      setAuthToken(access); // <-- use access token for auth headers
       onLogin();
       navigate("/dashboard");
     } catch (error) {
-      setError(error.message);
+      const errorMsg =
+        error.response?.data?.detail || // <- Django SimpleJWT returns this
+        error.response?.data?.message ||
+        "Login failed. Please try again.";
+      setError(errorMsg);
     }
   };
+  
 
   return (
     <div

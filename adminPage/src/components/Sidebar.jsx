@@ -1,6 +1,6 @@
 /** @format */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Group, Divider, Text } from "@mantine/core";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
@@ -9,8 +9,7 @@ import {
   IconReceipt2,
   IconLogout,
 } from "@tabler/icons-react";
-
-// Custom styles for Sidebar
+import { setAuthToken } from "../services/authService";
 import classes from "./Sidebar.module.css";
 
 const data = [
@@ -21,13 +20,12 @@ const data = [
 
 export function Sidebar() {
   const [active, setActive] = useState("Dashboard");
-  const navigate = useNavigate(); // Hook to handle navigation
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn"); // Remove login state
-    setTimeout(() => {
-      navigate("/login"); // Navigate after clearing state
-    }, 100); // Small delay to ensure state is cleared before navigating
+    localStorage.clear(); // Clear all localStorage entries
+    setAuthToken(null); // Remove token from axios
+    navigate("/login"); // Redirect immediately
   };
 
   return (
@@ -58,14 +56,19 @@ export function Sidebar() {
       <Divider my="sm" />
 
       <div className={classes.footer}>
-        <NavLink
-          to="/login"
+        <button
           className={classes.link}
-          onClick={handleLogout} // Trigger logout on click
+          onClick={handleLogout}
+          style={{
+            background: "none",
+            border: "none",
+            color: "white",
+            cursor: "pointer",
+          }}
         >
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>Logout</span>
-        </NavLink>
+        </button>
       </div>
     </nav>
   );

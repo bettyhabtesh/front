@@ -9,6 +9,12 @@ import ViewCertificate from "./pages/ViewCertificate";
 import Sende from "./pages/Login";
 import { useState, useEffect } from "react";
 import "./App.css";
+import { setAuthToken } from "./services/authService";
+
+const token = localStorage.getItem("token");
+if (token) {
+  setAuthToken(token);
+}
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(

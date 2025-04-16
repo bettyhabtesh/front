@@ -1,9 +1,16 @@
-/** @format */
-
+// services/authService.js
 import axios from "axios";
 
-// Set your backend URL
-const BASE_URL = "https://wheat-rust-detection-backend.onrender.com/";
+const BASE_URL = process.env.REACT_APP_API_URL;
+
+// Set default Authorization header
+export const setAuthToken = (token) => {
+  if (token) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  } else {
+    delete axios.defaults.headers.common["Authorization"];
+  }
+};
 
 export const login = async (email, password) => {
   try {
@@ -12,17 +19,29 @@ export const login = async (email, password) => {
       password,
     });
 
-    // If login is successful, store the token in localStorage
-    if (response.data && response.data.token) {
-      localStorage.setItem("authToken", response.data.token);
-      return { success: true, data: response.data };
-    } else {
-      return { success: false, error: "Invalid response from server" };
-    }
-  } catch (error) {
     return {
-      success: false,
-      error: error.response?.data?.message || "Login failed",
+      access: response.data.access_token,
+      refresh: response.data.refresh_token,
     };
+  } catch (error) {
+    console.error("Login error:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// Add try-catch to fetchUsers
+export const fetchUsers = async () => {
+  try {
+    const token = localStorage.getItem("token"); // 👈 get token from localStorage
+    const response = await axios.get(`${BASE_URL}/users/`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // 👈 include token here
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch users:", error.response?.data || error.message);
+    throw error;
   }
 };
